@@ -67,4 +67,8 @@ public class JWTUtil {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
+
+//    public String extractRole(String token) {
+//        return extractClaim(token, claims -> claims.get("role", String.class));
+//    }
 }

@@ -1,9 +1,11 @@
 package com.example.CORStest.controller;
 
 import com.example.CORStest.dto.Request.LoginRequest;
+import com.example.CORStest.dto.Request.UpdateUserRequest;
 import com.example.CORStest.dto.Respone.LoginRespone;
 import com.example.CORStest.entity.User;
 import com.example.CORStest.service.UserService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable String id){
         boolean isDeleted = userService.deleteUser(id);
         if(isDeleted){
@@ -48,9 +50,19 @@ public class UserController {
         }
         return ResponseEntity.status(404).body("User not found");
     }
+    @PostMapping("/admin/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UpdateUserRequest updateUserRequest){
+        userService.updateUser(id, updateUserRequest);
+        return updateUserRequest != null ? (ResponseEntity<User>) ResponseEntity.ok() : ResponseEntity.status(404).body(null);
+    }
 
-    @GetMapping("/get-user")
-    public Optional<User> getAllUser(String id){
+    @GetMapping("/admin/get-user")
+    public Optional<User> getUser(String id){
         return userService.getUser(id);
+    }
+
+    @GetMapping("/admin/get-all")
+    public List<User> getAllUser(){
+        return userService.getAllUser();
     }
 }

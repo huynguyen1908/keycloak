@@ -11,10 +11,16 @@ import java.util.Optional;
 @Service
 public interface UserService {
     User register(User user);
+
     LoginRespone login(String username, String password);
+
     void logout();
+
     boolean deleteUser(String id);
+
     User updateUser(String userId, UpdateUserRequest updateUserRequest);
+
     Optional<User> getUser(String id);
+
     List<User> getAllUser();
 }

@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
     @Override
     public LoginRespone login(String username, String password) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
@@ -49,10 +50,13 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
     @Override
-    public void logout(){}
+    public void logout() {
+    }
+
     @Override
-    public boolean deleteUser(String id){
+    public boolean deleteUser(String id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             userRepository.deleteById(id);
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
     @Override
     public User updateUser(String userId, UpdateUserRequest updateUserRequest) {
         return userRepository.findById(userId).map(user -> {
@@ -69,8 +74,9 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
         }).orElse(null);
     }
+
     @Override
-    public Optional<User> getUser(String id){
+    public Optional<User> getUser(String id) {
         Optional<User> user = userRepository.findById(id);
         return user;
     }

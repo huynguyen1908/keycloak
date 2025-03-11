@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    private UserDetailService userDetailService;
+    private final UserDetailService userDetailService;
 
     public JwtFilter(JWTUtil jwtUtil, UserDetailService userDetailsService) {
         this.jwtUtil = jwtUtil;
@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException, java.io.IOException {
+            throws ServletException, java.io.IOException {
         String requestURI = request.getServletPath();
         if (requestURI.equals("/login") || requestURI.equals("/register")) {
             chain.doFilter(request, response);

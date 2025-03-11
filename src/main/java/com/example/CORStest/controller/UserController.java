@@ -8,6 +8,8 @@ import com.example.CORStest.service.UserService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,34 +37,39 @@ public class UserController {
         return ResponseEntity.status(401).body("Invalid credentials");
     }
 
+    @GetMapping("/oauth/user/home")
+    public String userEndpoint(@AuthenticationPrincipal OAuth2User user){
+        return "Hello, " + user.getAttributes().get("name") + "! You are authenticated.";
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
         userService.logout();
         return ResponseEntity.ok("Logout successful");
     }
 
-
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id){
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         boolean isDeleted = userService.deleteUser(id);
-        if(isDeleted){
+        if (isDeleted) {
             return ResponseEntity.ok("Delete successful");
         }
         return ResponseEntity.status(404).body("User not found");
     }
+
     @PostMapping("/admin/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UpdateUserRequest updateUserRequest){
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UpdateUserRequest updateUserRequest) {
         userService.updateUser(id, updateUserRequest);
         return updateUserRequest != null ? (ResponseEntity<User>) ResponseEntity.ok() : ResponseEntity.status(404).body(null);
     }
 
     @GetMapping("/admin/get-user")
-    public Optional<User> getUser(String id){
+    public Optional<User> getUser(String id) {
         return userService.getUser(id);
     }
 
     @GetMapping("/admin/get-all")
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userService.getAllUser();
     }
 }

@@ -25,7 +25,6 @@ public class JWTUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Lấy thông tin claim từ token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -39,8 +38,6 @@ public class JWTUtil {
                 .getBody();
     }
 
-
-    // Kiểm tra token đã hết hạn chưa
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -62,7 +59,6 @@ public class JWTUtil {
                 .compact();
     }
 
-    // Xác minh token
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
